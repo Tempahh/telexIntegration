@@ -49,6 +49,54 @@ app.post("/sendnotification", async (req, res) => {
   });
 });
 
+app.get("/integration-config", (req, res) => {
+    res.json({
+      data: {
+        date: {
+          created_at: "2025-02-22",
+          updated_at: "2025-02-22"
+        },
+        descriptions: {
+          app_name: "Persistent Error Notifier",
+          app_description: "Implements a message counting integration that listens for incoming messages and sends Slack alerts when a certain threshold is reached.",
+          app_logo: "https://www.canva.com/design/DAGf0KBIoZI/YkY2nGHQ5WLkDyvBqIFCgQ/view?utm_content=DAGf0KBIoZI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0d50c039e5",
+          app_url: "https://telexintegration.onrender.com",
+          background_color: "#fff"
+        },
+        is_active: true,
+        integration_type: "modifier",
+        integration_category: "Monitoring & Logging",
+        key_features: [
+          "Listens for incoming messages.",
+          "Sends Slack alerts when a certain threshold is reached."
+        ],
+        author: "Tempah",
+        settings: [
+          {
+            label: "notificationThreshold",
+            type: "number",
+            required: true,
+            default: "5"
+          },
+          {
+            label: "slackWebhookUrl",
+            type: "text",
+            required: true,
+            default: "https://hooks.slack.com/services/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"
+          },
+          {
+            label: "triggerWord",
+            type: "multi-select",
+            required: true,
+            default: "urgent, critical, fatal"
+          }
+        ],
+        target_url: "https://telexintegration.onrender.com/sendnotification",
+        tick_url: "https://telexintegration.onrender.com/sendnotification",
+      }
+    });
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
