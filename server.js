@@ -23,9 +23,11 @@ app.post('/sendnotification', async (req, res) => {
 
   const messageContent = message.toLowerCase();
   const containsTriggerWord = triggerWords.some(word => messageContent.includes(word));
+  console.log('containsTriggerWord:', containsTriggerWord);
 
   if (containsTriggerWord) {
     messageCount++;
+    console.log('messageCount:', messageCount);
 
     if (messageCount >= threshold) {
       try {
@@ -41,7 +43,6 @@ app.post('/sendnotification', async (req, res) => {
 
   res.json({
     event_name: "message_count_updated",
-    message_count: messageCount,
     status: "success",
     username: "persistent-error-notifier"
   });
@@ -80,7 +81,7 @@ app.get("/integration-config", (req, res) => {
             label: "slackWebhookUrl",
             type: "text",
             required: true,
-            default: "https://hooks.slack.com/services/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"
+            default: "https://hooks.slack.com/services/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"
           },
           {
             label: "triggerWord",
@@ -99,7 +100,3 @@ app.get("/integration-config", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
-
-
