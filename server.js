@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
+const { v4: uuidv4 } = require('uuid');
 require("dotenv").config();
 
 const app = express();
@@ -19,11 +20,14 @@ app.get("/", (req, res) => {
 
 app.post('/sendnotification', async (req, res) => {
     console.log('Received request:', req.body);
-  const { channel_id, settings, message } = req.body;
-  console.log('channel_id:', channel_id);
+  const { settings, message } = req.body;
+
   const threshold = settings.find(s => s.label === 'notificationThreshold').default;
   const slackWebhookUrl = settings.find(s => s.label === 'slackWebhookUrl').default;
   const triggerWords = settings.find(s => s.label === 'triggerWord').default.split(',').map(word => word.trim().toLowerCase());
+  const channel_name = settings.find(s => s.label === 'channel_name').default;
+  const channel_id = `${channel_name}${uuidv4()}`
+
 
   const messageContent = message.toLowerCase();
   const containsTriggerWord = triggerWords.some(word => messageContent.includes(word));
@@ -94,6 +98,12 @@ app.get("/integration-config", (req, res) => {
             type: "multi-select",
             required: true,
             default: "urgent, critical, fatal"
+          },
+          {
+            label: "channel_name",
+            type: "text",
+            required: true,
+            default: "general-chat"
           }
         ],
         target_url: "https://telexintegration.onrender.com/sendnotification",
