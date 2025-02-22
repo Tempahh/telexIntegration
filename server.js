@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.post('/sendnotification', async (req, res) => {
+    console.log('Received request:', req.body);
   const { channel_id, settings, message } = req.body;
   console.log('channel_id:', channel_id);
   const threshold = settings.find(s => s.label === 'notificationThreshold').default;
