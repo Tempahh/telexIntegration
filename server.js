@@ -1,5 +1,6 @@
 const express = require("express");
 const axios = require("axios");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
@@ -9,6 +10,7 @@ let messageCount = 0;
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(cors());
 
 // Routes
 app.get("/", (req, res) => {
