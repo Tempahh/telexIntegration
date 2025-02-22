@@ -19,14 +19,13 @@ app.get("/", (req, res) => {
 });
 
 app.post('/sendnotification', async (req, res) => {
-    console.log('Received request:', req.body);
   const { settings, message } = req.body;
 
   const threshold = settings.find(s => s.label === 'notificationThreshold').default;
   const slackWebhookUrl = settings.find(s => s.label === 'slackWebhookUrl').default;
   const triggerWords = settings.find(s => s.label === 'triggerWord').default.split(',').map(word => word.trim().toLowerCase());
   const channel_id = `${uuidv4()}`
-  console.log(channel_id);
+  console.log(channel_id, threshold, slackWebhookUrl, triggerWords);
 
 
   const messageContent = message.toLowerCase();
