@@ -81,7 +81,7 @@ app.get("/integration-config", (req, res) => {
             label: "slackWebhookUrl",
             type: "text",
             required: true,
-            default: "https://hooks.slack.com/services/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"
+            default: process.env.SLACK_WEBHOOK_URL
           },
           {
             label: "triggerWord",
