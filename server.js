@@ -10,44 +10,40 @@ let messageCount = 0;
 // Middleware to parse JSON
 app.use(express.json());
 
-// POST endpoint for /sendnotification
-app.post("/sendnotification", async (req, res) => {
+// Routes
+app.get("/", (req, res) => {
+    res.send("Welcome to the Persistent Error Notifier API!");
+});
+
+app.post('/sendnotification', async (req, res) => {
   const { channel_id, settings, message } = req.body;
+  const threshold = settings.find(s => s.label === 'notificationThreshold').default;
+  const slackWebhookUrl = settings.find(s => s.label === 'slackWebhookUrl').default;
+  const triggerWords = settings.find(s => s.label === 'triggerWord').default.split(',').map(word => word.trim().toLowerCase());
 
-  if (!channel_id || !settings || !message) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
+  const messageContent = message.toLowerCase();
+  const containsTriggerWord = triggerWords.some(word => messageContent.includes(word));
 
-  // Extract settings
-  const threshold = settings.find(s => s.label === "notificationThreshold")?.default || 5;
-  const slackWebhookUrl = settings.find(s => s.label === "slackWebhookUrl")?.default;
-  const triggerWord = settings.find(s => s.label === "triggerWord")?.default || "urgent";
-
-  // Check if the message contains the trigger word
-  if (message.toLowerCase().includes(triggerWord.toLowerCase())) {
+  if (containsTriggerWord) {
     messageCount++;
-    console.log(`Trigger word found. Message count: ${messageCount}`);
-  }
 
-  // If count reaches threshold, send a Slack notification
-  if (messageCount >= threshold) {
-    try {
-      await axios.post(slackWebhookUrl, {
-        text: `🚨 Threshold reached! you have ${threshold} ${triggerWord} alerts.`,
-      });
-      const messgae = "Slack notification sent!";
-        console.log(messgae);
-      messageCount = 0; // Reset counter after notification
-    } catch (error) {
-      console.error("Failed to send Slack notification:", error);
+    if (messageCount >= threshold) {
+      try {
+        await axios.post(slackWebhookUrl, {
+          text: `Threshold reached! ${messageCount} trigger messages detected in channel ${channel_id}.`
+        });
+        messageCount = 0; // Reset the count after sending notification
+      } catch (error) {
+        console.error('Failed to send Slack notification:', error);
+      }
     }
   }
 
   res.json({
-    "event_name": "message_formatted",
-    "message": `${messageCount} messages processed.`,
-    "status": "success",
-    "username": "Persistent Error Notifier"
+    event_name: "message_count_updated",
+    message_count: messageCount,
+    status: "success",
+    username: "persistent-error-notifier"
   });
 });
 
