@@ -25,8 +25,7 @@ app.post('/sendnotification', async (req, res) => {
   const threshold = settings.find(s => s.label === 'notificationThreshold').default;
   const slackWebhookUrl = settings.find(s => s.label === 'slackWebhookUrl').default;
   const triggerWords = settings.find(s => s.label === 'triggerWord').default.split(',').map(word => word.trim().toLowerCase());
-  const channels_name = settings.find(s => s.label === 'channel_name').default;
-  const channel_id = `${channels_name}${uuidv4()}`
+  const channel_id = `${uuidv4()}`
   console.log(channel_id);
 
 
@@ -100,12 +99,6 @@ app.get("/integration-config", (req, res) => {
             required: true,
             default: "urgent, critical, fatal"
           },
-          {
-            label: "channel_name",
-            type: "text",
-            required: true,
-            default: "general-chat"
-          }
         ],
         target_url: "https://telexintegration.onrender.com/sendnotification",
         tick_url: "https://telexintegration.onrender.com/sendnotification",
