@@ -35,7 +35,8 @@ app.post("/sendnotification", async (req, res) => {
       await axios.post(slackWebhookUrl, {
         text: `🚨 Threshold reached! you have ${threshold} ${triggerWord} alerts.`,
       });
-      console.log("Slack notification sent!");
+      const messgae = "Slack notification sent!";
+        console.log(messgae);
       messageCount = 0; // Reset counter after notification
     } catch (error) {
       console.error("Failed to send Slack notification:", error);
@@ -43,9 +44,10 @@ app.post("/sendnotification", async (req, res) => {
   }
 
   res.json({
-    event_name: "notification_sent",
-    message_count: messageCount,
-    status: "success",
+    "event_name": "message_formatted",
+    "message": `${messageCount} messages processed.`,
+    "status": "success",
+    "username": "Persistent Error Notifier"
   });
 });
 
@@ -101,3 +103,7 @@ app.get("/integration-config", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+
+
