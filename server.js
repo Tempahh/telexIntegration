@@ -17,6 +17,7 @@ app.get("/", (req, res) => {
 
 app.post('/sendnotification', async (req, res) => {
   const { channel_id, settings, message } = req.body;
+  console.log('channel_id:', channel_id);
   const threshold = settings.find(s => s.label === 'notificationThreshold').default;
   const slackWebhookUrl = settings.find(s => s.label === 'slackWebhookUrl').default;
   const triggerWords = settings.find(s => s.label === 'triggerWord').default.split(',').map(word => word.trim().toLowerCase());
@@ -32,7 +33,7 @@ app.post('/sendnotification', async (req, res) => {
     if (messageCount >= threshold) {
       try {
         await axios.post(slackWebhookUrl, {
-          text: `Threshold reached! ${messageCount} trigger messages detected in channel ${channel_id}.`
+          text: 
         });
         messageCount = 0; // Reset the count after sending notification
       } catch (error) {
@@ -43,6 +44,7 @@ app.post('/sendnotification', async (req, res) => {
 
   res.json({
     event_name: "message_count_updated",
+    message: `Threshold reached! ${messageCount} trigger messages detected in channel ${channel_id}.`,
     status: "success",
     username: "persistent-error-notifier"
   });
