@@ -51,7 +51,7 @@ app.post('/sendnotification', async (req, res) => {
 
   res.json({
     event_name: "message_count_updated",
-    message: `${messageCount} trigger messages detected in channel ${channel_id}.`,
+    message: `${messageCount} trigger messages detected in channel.`,
     status: "success",
     username: "persistent-error-notifier"
   });
