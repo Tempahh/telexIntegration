@@ -14,7 +14,6 @@ A Node.js-powered API that listens for incoming messages and sends Slack alerts 
 - **Node.js**
 - **Express.js**
 - **Axios**
-- **UUID** for unique identifiers
 - **CORS** for cross-origin requests
 - **dotenv** for environment variable management
 
