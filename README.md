@@ -20,23 +20,27 @@ A Node.js-powered API that listens for incoming messages and sends Slack alerts 
 ## 📦 Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/your-username/persistent-error-notifier.git
    cd persistent-error-notifier
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables:**
    Create a `.env` file and add your Slack webhook URL:
+
    ```env
    SLACK_WEBHOOK_URL=https://hooks.slack.com/services/your/webhook/url
    ```
 
 4. **Run the application:**
+
    ```bash
    npm start
    ```
@@ -44,9 +48,11 @@ A Node.js-powered API that listens for incoming messages and sends Slack alerts 
 ## 📍 API Endpoints
 
 ### `GET /`
+
 Returns a welcome message.
 
 **Response:**
+
 ```json
 {
   "message": "Welcome to the Persistent Error Notifier API!"
@@ -54,9 +60,11 @@ Returns a welcome message.
 ```
 
 ### `POST /sendnotification`
+
 Sends a Slack notification when the message threshold is reached.
 
 **Request Body:**
+
 ```json
 {
   "settings": [
@@ -68,7 +76,24 @@ Sends a Slack notification when the message threshold is reached.
 }
 ```
 
+**Sample cURL Request:**
+
+```bash
+curl -X POST https://telexintegration.onrender.com/sendnotification \
+  -H "Content-Type: application/json" \
+  -d '{
+    "channel_id": "abc123",
+    "settings": [
+      { "label": "notificationThreshold", "default": 5 },
+      { "label": "slackWebhookUrl", "default": "https://hooks.slack.com/services/your/slack/webhook" },
+      { "label": "triggerWord", "default": "urgent" }
+    ],
+    "message": "This is an urgent message for testing."
+  }'
+```
+
 **Response:**
+
 ```json
 {
   "event_name": "message_count_updated",
@@ -79,9 +104,11 @@ Sends a Slack notification when the message threshold is reached.
 ```
 
 ### `GET /integration-config`
+
 Returns integration configuration details.
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -95,6 +122,7 @@ Returns integration configuration details.
 ```
 
 ## ⚙️ Customization
+
 You can tweak these settings:
 
 - `notificationThreshold`: Number of trigger messages before sending a notification (default: 5).
@@ -117,5 +145,5 @@ This project is licensed under the MIT License.
 
 ---
 
-_"Because missing critical errors? That's so last season."_
+*"Because missing critical errors? That's so last season."*
 
