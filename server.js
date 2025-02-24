@@ -67,7 +67,7 @@ app.get("/integration-config", (req, res) => {
           updated_at: "2025-02-22"
         },
         descriptions: {
-          app_name: "Persistent Error Notifier",
+          app_name: "Error Alert Tracker",
           app_description: "Implements a message counting integration that listens for specific keywords in incoming messages and sends Slack alerts when a certain threshold is reached.",
           app_logo: "https://www.canva.com/design/DAGf0KBIoZI/YkY2nGHQ5WLkDyvBqIFCgQ/view?utm_content=DAGf0KBIoZI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h0d50c039e5",
           app_url: "https://telexintegration.onrender.com",
