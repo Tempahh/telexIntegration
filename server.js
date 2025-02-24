@@ -55,7 +55,47 @@ app.post('/sendnotification', async (req, res) => {
     status: "success",
     username: "persistent-error-notifier"
   });
+});app.post('/sendnotification', async (req, res) => {
+  const { settings, message } = req.body;
+
+  const threshold = settings.find(s => s.label === 'notificationThreshold').default;
+  const slackWebhookUrl = settings.find(s => s.label === 'slackWebhookUrl').default;
+  const triggerWordsSetting = settings.find(s => s.label === 'triggerWord');
+  const triggerWords = String(triggerWordsSetting.default)
+    .split(',')
+    .map(word => word.trim().toLowerCase());
+
+  const channel_id = `${uuidv4()}`;
+  console.log(channel_id, threshold, slackWebhookUrl, triggerWords);
+
+  const messageContent = message.toLowerCase();
+  const containsTriggerWord = triggerWords.some(word => messageContent.includes(word));
+  console.log('containsTriggerWord:', containsTriggerWord);
+
+  if (containsTriggerWord) {
+    messageCount++;
+    console.log('messageCount:', messageCount);
+
+    if (messageCount >= threshold) {
+      try {
+        await axios.post(slackWebhookUrl, {
+          text: `Threshold reached! ${messageCount} trigger messages detected in channel ${channel_id}.`
+        }, { timeout: 3000 });
+        messageCount = 0; // Reset the count after sending notification
+      } catch (error) {
+        console.error('Failed to send Slack notification:', error);
+      }
+    }
+  }
+
+  res.json({
+    event_name: "message_count_updated",
+    message: `${messageCount} trigger messages detected in channel.`,
+    status: "success",
+    username: "persistent-error-notifier"
+  });
 });
+
 
 app.get("/integration-config", (req, res) => {
     res.json({
