@@ -97,7 +97,7 @@ curl -X POST https://telexintegration.onrender.com/sendnotification \
 ```json
 {
   "event_name": "message_count_updated",
-  "message": "5 trigger messages detected in channel {channel_id}.",
+  "message": "5 trigger messages detected in channel.",
   "status": "success",
   "username": "persistent-error-notifier"
 }
