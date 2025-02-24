@@ -23,7 +23,9 @@ app.post('/sendnotification', async (req, res) => {
 
   const threshold = settings.find(s => s.label === 'notificationThreshold').default;
   const slackWebhookUrl = settings.find(s => s.label === 'slackWebhookUrl').default;
-  const triggerWords = settings.find(s => s.label === 'triggerWord').default.split(',').map(word => word.trim().toLowerCase());
+  const triggerWordsSetting = settings.find(s => s.label === 'triggerWord');
+  const triggerWords = String(triggerWordsSetting.default).split(',').map(word => word.trim().toLowerCase());
+
   const channel_id = `${uuidv4()}`
   console.log(channel_id, threshold, slackWebhookUrl, triggerWords);
 
