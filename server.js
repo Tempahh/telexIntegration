@@ -76,7 +76,7 @@ app.get("/integration-config", (req, res) => {
         integration_category: "Monitoring & Logging",
         key_features: [
           "Listens for incoming messages.",
-          "Keeps count of keywords that can be choosen as a setting option"
+          "Keeps count of keywords that can be choosen as a setting option",
           "Sends Slack alerts when a certain threshold which is also a customisable feature in the settings is reached ."
         ],
         author: "Tempah",
