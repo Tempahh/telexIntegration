@@ -105,7 +105,7 @@ app.get("/integration-config", (req, res) => {
           },
         ],
         target_url: "https://telexintegration.onrender.com/sendnotification",
-        tick_url: "https://telexintegration.onrender.com/sendnotification",
+        tick_url: "https://telexintegration.onrender.com/sendnotification/integration-config",
       }
     });
 });
