@@ -80,7 +80,7 @@ app.post('/sendnotification', async (req, res) => {
       try {
         await axios.post(slackWebhookUrl, {
           text: `Threshold reached! ${messageCount} trigger messages detected in channel ${channel_id}.`
-        }, { timeout: 3000 });
+        }, { timeout: 1000 });
         messageCount = 0; // Reset the count after sending notification
       } catch (error) {
         console.error('Failed to send Slack notification:', error);
